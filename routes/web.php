@@ -20,7 +20,11 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/posts', function () {
-    $posts = Post::latest()
+    $posts = Post::with('author:id,name')
+        ->select([
+            'id', 'title', 'author_id', 'created_at',
+        ])
+        ->latest()
         ->take(50)
         ->get();
 
